@@ -2,8 +2,10 @@ locals {
   
   region       = lower(lookup(local.region_abbreviations, var.region, var.region))
   
+  # ─── Region abbreviations ─────────────────────────────────────────────────────
   #Region abbreviations (Azure regions → short codes)
-  # Source: https://gist.github.com/ausfestivus/04e55c7d80229069bf3bc75870630ec8
+  # Source: https://learn.microsoft.com/en-us/azure/reliability/regions-list
+  # Last updated: March 2026. Only public cloud regions included.
   region_abbreviations = {
     # Africa
     "southafricanorth"   = "san"
@@ -16,12 +18,13 @@ locals {
     "australiasoutheast" = "ause"
     "centralindia"       = "inc"
     "eastasia"           = "eas"
+    "indonesiacentral"   = "idc"
     "japaneast"          = "jpe"
     "japanwest"          = "jpw"
-    "jioindiacentral"    = "jiic"
-    "jioindiawest"       = "jiiw"
     "koreacentral"       = "krc"
     "koreasouth"         = "krs"
+    "malaysiawest"       = "myw"
+    "newzealandnorth"    = "nzn"
     "southindia"         = "ins"
     "southeastasia"      = "sea"
     "westindia"          = "inw"
@@ -31,6 +34,9 @@ locals {
     "canadaeast"         = "cae"
 
     # Europe
+    "austriaeast"        = "ate"
+    "belgiumcentral"     = "bec"
+    "denmarkeast"        = "dke"
     "francecentral"      = "frc"
     "francesouth"        = "frs"
     "germanynorth"       = "gern"
@@ -60,18 +66,14 @@ locals {
     # South America
     "brazilsouth"        = "brs"
     "brazilsoutheast"    = "brse"
-    "brazilus"           = "brus"
+    "chilecentral"       = "clc"
 
     # US
     "centralus"          = "cus"
-    "centraluseuap"      = "cuseuap"
     "eastus"             = "eus"
     "eastus2"            = "eus2"
-    "eastus2euap"        = "eus2euap"
-    "eastusstg"          = "eusstg"
     "northcentralus"     = "ncus"
     "southcentralus"     = "scus"
-    "southcentralusstg"  = "scusstg"
     "westcentralus"      = "wcus"
     "westus"             = "wus"
     "westus2"            = "wus2"

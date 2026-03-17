@@ -53,13 +53,13 @@ variable "suffix" {
 variable "name_order" {
   description = "Order of name parts. Allows overriding the default convention."
   type        = list(string)
-  default     = ["workload", "project", "environment", "region", "suffix"]
+  default     = ["workload", "project", "environment", "region"]
 
   validation {
     condition = alltrue([
       for part in var.name_order :
-      contains(["workload", "project", "environment", "region", "suffix", "workload"], part)
+      contains(["workload", "project", "environment", "region", "suffix"], part)
     ])
-    error_message = "Valid parts: workload, project, environment, region, suffix, instance"
+    error_message = "Valid parts: workload, project, environment, region, suffix"
   }
 }
