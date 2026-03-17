@@ -3,6 +3,11 @@ output "names" {
   value       = local.names
 }
 
+output "region" {
+  description = "value"
+  value = local.region
+}
+
 # Convenience outputs for most common resources
 output "resource_group" {
   description = "Resource Group name"

@@ -34,7 +34,7 @@ variable "workload" {
   default     = null
 
   validation {
-    condition     = var.service_name == null || (can(regex("^[a-zA-Z0-9-]+$", var.service_name)) && length(var.service_name) >= 1 && length(var.service_name) <= 16)
+    condition     = var.workload == null || (can(regex("^[a-zA-Z0-9-]+$", var.workload)) && length(var.workload) >= 1 && length(var.workload) <= 16)
     error_message = "workload must be 1-16 alphanumeric characters (dashes allowed)"
   }
 }
@@ -47,5 +47,19 @@ variable "suffix" {
   validation {
     condition     = var.suffix == null || (can(regex("^[a-zA-Z0-9-]+$", var.suffix)) && length(var.suffix) >= 1 && length(var.suffix) <= 16)
     error_message = "suffix must be 1-16 alphanumeric characters (dashes allowed)"
+  }
+}
+
+variable "name_order" {
+  description = "Order of name parts. Allows overriding the default convention."
+  type        = list(string)
+  default     = ["workload", "project", "environment", "region", "suffix"]
+
+  validation {
+    condition = alltrue([
+      for part in var.name_order :
+      contains(["workload", "project", "environment", "region", "suffix", "workload"], part)
+    ])
+    error_message = "Valid parts: workload, project, environment, region, suffix, instance"
   }
 }

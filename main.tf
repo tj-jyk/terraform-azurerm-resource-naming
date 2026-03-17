@@ -2,95 +2,20 @@ locals {
   # Normalize inputs
   project      = lower(replace(var.project, "/[^a-z0-9-]/", ""))
   environment  = lower(var.environment)
-  region       = lower(lookup(local.region_abbreviations, var.region, var.region))
+  
   workload = var.workload != null ? lower(replace(var.workload, "/[^a-z0-9-]/", "")) : null
   suffix       = var.suffix != null ? lower(replace(var.suffix, "/[^a-z0-9-]/", "")) : null
 
-  #Region abbreviations (Azure regions → short codes)
-  # Source: https://gist.github.com/ausfestivus/04e55c7d80229069bf3bc75870630ec8
-  region_abbreviations = {
-    # Africa
-    "southafricanorth"   = "san"
-    "southafricawest"    = "saw"
-
-    # Asia Pacific
-    "australiacentral"   = "auc"
-    "australiacentral2"  = "auc2"
-    "australiaeast"      = "aue"
-    "australiasoutheast" = "ause"
-    "centralindia"       = "inc"
-    "eastasia"           = "eas"
-    "japaneast"          = "jpe"
-    "japanwest"          = "jpw"
-    "jioindiacentral"    = "jiic"
-    "jioindiawest"       = "jiiw"
-    "koreacentral"       = "krc"
-    "koreasouth"         = "krs"
-    "southindia"         = "ins"
-    "southeastasia"      = "sea"
-    "westindia"          = "inw"
-
-    # Canada
-    "canadacentral"      = "cac"
-    "canadaeast"         = "cae"
-
-    # Europe
-    "francecentral"      = "frc"
-    "francesouth"        = "frs"
-    "germanynorth"       = "gern"
-    "germanywestcentral" = "gwc"
-    "italynorth"         = "itn"
-    "northeurope"        = "neu"
-    "norwayeast"         = "noe"
-    "norwaywest"         = "now"
-    "polandcentral"      = "plc"
-    "spaincentral"       = "esc"
-    "swedencentral"      = "swc"
-    "switzerlandnorth"   = "chn"
-    "switzerlandwest"    = "chw"
-    "uksouth"            = "uks"
-    "ukwest"             = "ukw"
-    "westeurope"         = "weu"
-
-    # Mexico
-    "mexicocentral"      = "mxc"
-
-    # Middle East
-    "israelcentral"      = "ilc"
-    "qatarcentral"       = "qac"
-    "uaecentral"         = "uaec"
-    "uaenorth"           = "uaen"
-
-    # South America
-    "brazilsouth"        = "brs"
-    "brazilsoutheast"    = "brse"
-    "brazilus"           = "brus"
-
-    # US
-    "centralus"          = "cus"
-    "centraluseuap"      = "cuseuap"
-    "eastus"             = "eus"
-    "eastus2"            = "eus2"
-    "eastus2euap"        = "eus2euap"
-    "eastusstg"          = "eusstg"
-    "northcentralus"     = "ncus"
-    "southcentralus"     = "scus"
-    "southcentralusstg"  = "scusstg"
-    "westcentralus"      = "wcus"
-    "westus"             = "wus"
-    "westus2"            = "wus2"
-    "westus3"            = "wus3"
+  _parts_map = {
+    service_name = local.workload
+    project      = local.project
+    environment  = local.environment
+    region       = local.region
+    suffix       = local.suffix
   }
 
-
-  # Base name parts (without type prefix)
-  # Order: [service_name]-{project}-{env}-{region}-[instance]-[suffix]
   _base_parts = compact([
-    local.workload,
-    local.project,
-    local.environment,
-    local.region,
-    local.suffix,
+    for part in var.name_order : lookup(local._parts_map, part, null)
   ])
 
   # Standard name with dashes (e.g. myapp-prod-weu or api-myapp-prod-weu-kv)
