@@ -34,7 +34,7 @@ variable "workload" {
   default     = null
 
   validation {
-    condition     = var.workload == null || (can(regex("^[a-zA-Z0-9-]+$", var.workload)) && length(var.workload) >= 1 && length(var.workload) <= 16)
+    condition     = var.workload == null || var.workload == "" || (can(regex("^[a-zA-Z0-9-]+$", var.workload)) && length(var.workload) >= 1 && length(var.workload) <= 16)
     error_message = "workload must be 1-16 alphanumeric characters (dashes allowed)"
   }
 }
@@ -45,7 +45,7 @@ variable "suffix" {
   default     = null
 
   validation {
-    condition     = var.suffix == null || (can(regex("^[a-zA-Z0-9-]+$", var.suffix)) && length(var.suffix) >= 1 && length(var.suffix) <= 16)
+    condition     = var.suffix == null || var.suffix == "" || (can(regex("^[a-zA-Z0-9-]+$", var.suffix)) && length(var.suffix) >= 1 && length(var.suffix) <= 16)
     error_message = "suffix must be 1-16 alphanumeric characters (dashes allowed)"
   }
 }
