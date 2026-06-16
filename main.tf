@@ -3,8 +3,8 @@ locals {
   project      = lower(replace(var.project, "/[^a-z0-9-]/", ""))
   environment  = lower(var.environment)
   
-  workload = var.workload != null ? lower(replace(var.workload, "/[^a-z0-9-]/", "")) : null
-  suffix       = var.suffix != null ? lower(replace(var.suffix, "/[^a-z0-9-]/", "")) : null
+  workload = var.workload != null && var.workload != "" ? lower(replace(var.workload, "/[^a-z0-9-]/", "")) : null
+  suffix   = var.suffix != null && var.suffix != "" ? lower(replace(var.suffix, "/[^a-z0-9-]/", "")) : null
 
   _parts_map = {
     workload     = local.workload
